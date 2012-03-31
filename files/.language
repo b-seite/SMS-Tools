@@ -1,0 +1,10 @@
+languages
+{ de en }
+default
+{ en }
+files
+{
+	etc/default.smstools3/smsd_conf.def
+	etc/init.d/rc.smstools3
+	usr/lib/cgi-bin/smstools3.cgi
+}
