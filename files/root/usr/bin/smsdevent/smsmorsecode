@@ -39,6 +39,7 @@ if [ "$1" = "RECEIVED" ]; then
 SMSTEXT=`sed -e '1,/^$/ d' < "$2"`
 echo "$SMSTEXT" > /tmp/flash/smstools3/message1.txt
 echo "$SMSTEXT" | cwtext > /tmp/flash/smstools3/morsecode1.txt
+echo "$SMSTEXT" | cwtext | /usr/bin/smsdevent/morsetoinfoled
 fi
 
 #The following code concatenates multipart text messages
