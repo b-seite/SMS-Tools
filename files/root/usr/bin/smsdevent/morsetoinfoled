@@ -1,0 +1,46 @@
+#!/bin/sh
+# This script sends morse code to the info led of a FritzBox.
+# $1 is the morse code input. Format like "...---..."
+# $2 is the morse code speed in WpM (if not set 12 WpM)
+ 
+
+#if WpM not set then use 12 WpM
+if [ -z "$2" ]; then
+    WPM=6
+else
+	WPM=`$2`
+fi
+
+#Length of a dit in ms
+DITLENGTH=`expr 1200000 / $WPM`
+DAHLENGTH=`expr $DITLENGTH \* 3`
+
+i=0
+while [ $i -le ${#1} ]; do
+    case ${1:$i:1} in
+    "-" )
+    	led-ctrl update_led1
+    	usleep $DAHLENGTH
+    	led-ctrl update_led1=0
+    	usleep $DITLENGTH
+    	;;
+    "." )
+    	led-ctrl update_led1
+    	usleep $DITLENGTH
+    	led-ctrl update_led1=0
+    	usleep $DITLENGTH
+    	;;
+     " " )
+    	led-ctrl update_led1=0
+    	usleep $DAHLENGTH
+    	if [ ${1:$i+1:1} = " " ]; then
+    		usleep $DAHLENGTH
+    		usleep $DITLENGTH
+		fi
+    	;;
+    	*)
+    esac
+    i=$(($i + 1))
+done
+
+led-ctrl update_led1=0
